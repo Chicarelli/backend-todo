@@ -7,8 +7,7 @@ const TaskValidation = async(req, res, next) => {
     
     if (!macaddress || !type || !title || !description || !when)
         return res.status(400).json({error: 'Preencha os campos obrigatórios!'});
-    else if(isPast(new Date(when)))
-        return res.status(400).json({error: 'Preencha uma data válida'});
+    
     else {
         let exists;
 
@@ -19,6 +18,9 @@ const TaskValidation = async(req, res, next) => {
                         'macaddress': {'$in': macaddress}
             });
         } else {
+            
+        if(isPast(new Date(when)))
+        return res.status(400).json({error: 'Preencha uma data válida'});
 
         exists = await Taskmodel
         .findOne(
